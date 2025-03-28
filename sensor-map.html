@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sensor Location - OpenStreetMap</title>
+
+    <!-- Leaflet CSS & JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        /* Fullscreen Map Styling */
+        html, body { margin: 0; padding: 0; height: 100%; }
+        #map { width: 100%; height: calc(100vh - 60px); } /* Adjust height to leave space for header */
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <!-- Header -->
+    <header class="bg-blue-600 text-white p-4 flex justify-between items-center shadow-md">
+        <h1 class="text-lg font-bold">📡 Sensor Locations</h1>
+        <nav>
+            <a href="dashboard.html" class="px-4 py-2 bg-white text-blue-600 rounded-lg shadow hover:bg-gray-200">Home</a>
+            <a href="#" class="px-4 py-2 bg-white text-blue-600 rounded-lg shadow hover:bg-gray-200">Sensors</a>
+        </nav>
+    </header>
+
+    <!-- Map Container -->
+    <div id="map"></div>
+
+    <script>
+        var map = L.map('map').setView([13.059763196409511, 80.15444685343358], 17);
+    
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+    
+        var sensorLocations = [
+            { lat: 13.059783569508223, lng: 80.15415725703181, name: "📡 Sensor 1", field: 1 },
+            { lat: 13.060030323326277, lng: 80.153928785194, name: "📡 Sensor 2", field: 2 },
+            { lat: 13.059868239963755, lng: 80.1536779628524, name: "📡 Sensor 3", field: 3 },
+            { lat: 13.059989197707060, lng: 80.15339733983544, name: "📡 Sensor 4", field: 4 }
+        ];
+    
+        var markers = [];
+    
+        function fetchSensorData() {
+            fetch("https://api.thingspeak.com/channels/2876885/feeds.json?results=1")
+                .then(response => response.json())
+                .then(data => {
+                    var feeds = data.feeds[0];
+    
+                    sensorLocations.forEach((sensor, index) => {
+                        var sensorValue = parseFloat(feeds[`field${sensor.field}`]);
+                        var isHigh = sensorValue > 50; // Threshold for high value
+    
+                        // Remove marker if value is low
+                        if (!isHigh) {
+                            if (markers[index]) {
+                                map.removeLayer(markers[index]);
+                                markers[index] = null;
+                            }
+                            return;
+                        }
+    
+                        // If value is high, show a red blinking marker
+                        var customIcon = L.divIcon({
+                            className: "blinking",
+                            html: `<div style="width:20px;height:20px;background:red;border-radius:50%;"></div>`
+                        });
+    
+                        if (markers[index]) {
+                            map.removeLayer(markers[index]);
+                        }
+    
+                        markers[index] = L.marker([sensor.lat, sensor.lng], { icon: customIcon })
+                            .addTo(map)
+                            .bindPopup(`<b>${sensor.name}</b><br>Value: ${sensorValue}`);
+    
+                        alert(`${sensor.name} has high value: ${sensorValue}`);
+                    });
+                })
+                .catch(error => console.error("Error fetching data:", error));
+        }
+    
+        fetchSensorData();
+        setInterval(fetchSensorData, 15000);
+    </script>
+    
+</body>
+</html>

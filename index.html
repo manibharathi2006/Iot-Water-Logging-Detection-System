@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style> 
+        body {
+            background-color: rgba(0, 0, 0, 0.651);
+            background-size: cover;
+            background-position: center;
+            backdrop-filter: blur(10px);
+        }
+        .glassmorphism {
+            background: rgb(0, 0, 0);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgb(38, 0, 255);
+        }
+    </style>
+</head>
+<body class="flex justify-center items-center min-h-screen">
+
+    <div class="glassmorphism p-8 rounded-2xl shadow-lg w-full max-w-md text-center">
+        
+        <!-- Header with College Logo and Name -->
+        <div class="mb-6 flex flex-col items-center">
+            <img src="your-logo-url.png" alt="College Logo" class="w-20 h-20 -full mb-2 shadow-md"> 
+            <h1 class="text-2xl font-semibold text-white mb-1 drop-shadow-lg">T.S. Srinivasan Polytechnic College</h1>
+        </div>
+
+        <h1 class="text-4xl font-bold text-white mb-6 drop-shadow-lg">Login</h1>
+
+        <form onsubmit="return loginUser()">
+            <div class="mt-4 text-left">
+                <label for="username" class="block text-white font-semibold">Username:</label>
+                <div class="flex items-center border border-gray-300 bg-white rounded-md mt-2 p-2">
+                    <span class="px-2 text-gray-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A12.042 12.042 0 0112 15.5c2.419 0 4.676.715 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                    </span>
+                    <input type="text" id="username" class="w-full p-2 focus:outline-none bg-transparent" placeholder="Enter your username" required>
+                </div>
+            </div>
+
+            <div class="mt-4 text-left">
+                <label for="password" class="block text-white font-semibold">Password:</label>
+                <div class="flex items-center border border-gray-300 bg-white rounded-md mt-2 p-2">
+                    <span class="px-2 text-gray-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m0-8v2m-6 6v2m6-10V7a4 4 0 018 0v4m-8 6h.01" />
+                        </svg>
+                    </span>
+                    <input type="password" id="password" class="w-full p-2 focus:outline-none bg-transparent" placeholder="Enter your password" required>
+                </div>
+            </div>
+
+            <button type="submit" class="bg-gradient-to-r from-blue-500 to-purple-500 text-white w-full px-4 py-2 rounded-lg shadow-md hover:scale-105 transition transform mt-6 font-bold">
+                Login
+            </button>
+        </form>
+      </div>
+
+    <script>
+        function loginUser() {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            // Correct credentials
+            const correctUsername = "admin";
+            const correctPassword = "admin";
+
+            if (username === correctUsername && password === correctPassword) {
+                window.location.href = "dashboard.html"; // Redirect to home page
+                return false; // Prevent form submission
+            } else {
+                alert("Invalid username or password! Try again."); // Alert only for wrong login
+                return false;
+            }
+        }
+    </script>
+
+</body>
+</html>
