@@ -1,2 +1,4 @@
 # Iot-Water-Logging-Detection-System
 A smart system to detect and alert about water logging conditions using IoT sensors
+Water logging and urban flooding are critical challenges in many cities worldwide, leading to severe infrastructure damage, traffic disruptions, and safety hazards. This project focuses on the development of an IoT-based water logging detection system that continuously monitors real-time water levels, rainfall intensity, and environmental conditions to provide early warnings and improve flood management strategies.
+The system integrates ESP32 microcontrollers, water level sensors, rainfall sensors, and a cloud-based data visualization platform to enable smart monitoring and proactive response mechanisms. The data collected is uploaded to ThingSpeak and Firebase, ensuring real-time accessibility via a mobile application.
